@@ -54,37 +54,3 @@ tasks.withType(Checkstyle) {
         html.enabled = true
     }
 }
-
-task cucumberCli() {
-    dependsOn assemble, testClasses
-    doLast {
-        javaexec {
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = [
-                    '--plugin', 'pretty',
-                    '--plugin', 'html:build/cucumber/cucumber-report.html',
-                    '--plugin', 'json:build/cucumber/cucumber.json',
-                    '--plugin', 'rerun:build/cucumber/rerun.txt',
-                    '--glue', 'rest.salesforce.com.scenarios',
-                    'src/test/resources/features']
-            ignoreExitValue = true
-        }
-    }
-}
-
-task executeFeatures(type: Test) {
-    useTestNG()
-    options {
-        useDefaultListeners = false
-        jvmArgs = ['-Dcucumber.glue=rest.salesforce.com.scenarios']
-        jvmArgs = ['-Dcucumber.features=src/test/resources/features/']
-        jvmArgs = ['-Dcucumber.plugin=pretty,' +
-                           'html:build/cucumber/cucumber-report.html,' +
-                           'json:build/cucumber/cucumber.json,' +
-                           'rerun:build/cucumber/rerun.txt']
-    }
-    ignoreFailures = true
-    scanForTestClasses = false
-    testLogging.showStandardStreams = true
-}
