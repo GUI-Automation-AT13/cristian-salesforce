@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.rest-assured:rest-assured:4.4.0'
+    implementation 'io.rest-assured:json-schema-validator:4.4.0'
+    implementation 'io.rest-assured:json-path:4.4.0'
+    implementation 'org.springframework:spring-web:5.3.7'
+    compile 'io.github.cdimascio:java-dotenv:5.2.2'
+    implementation 'org.testng:testng:7.4.0'
+    implementation 'io.cucumber:cucumber-java:6.10.4'
+    implementation 'io.cucumber:cucumber-testng:6.10.4'
+    implementation 'io.cucumber:cucumber-picocontainer:6.10.4'
+    implementation 'log4j:log4j:1.2.17'
+    implementation 'org.slf4j:slf4j-api:2.0.0-alpha1'
+    implementation 'org.slf4j:slf4j-simple:2.0.0-alpha1'
+    implementation 'net.masterthought:cucumber-reporting:5.5.3'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.7'
+    // https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java
+    implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '2.2.0'
+    // https://mvnrepository.com/artifact/commons-lang/commons-lang
+    implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    // https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin
+    implementation group: 'org.apache.maven.plugins', name: 'maven-checkstyle-plugin', version: '3.1.2'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+}
+
+test {
+    ignoreFailures = true
+    scanForTestClasses = false
+    testLogging.showStandardStreams = true
+    useTestNG()
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+tasks.withType(Checkstyle) {
+    ignoreFailures = true
+    reports {
+        html.enabled = true
+    }
+}
